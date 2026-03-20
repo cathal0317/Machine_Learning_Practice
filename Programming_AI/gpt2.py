@@ -34,6 +34,8 @@ class CausalSelfAttention(nn.Module):
         y = self.c_proj(y)
         return y
 
+        ####
+
 class MLP(nn.Module):
     def __init__(self, config):
         super().__init__()
@@ -135,19 +137,23 @@ class GPT(nn.Module):
                     sd[k].copy_(sd_hf[k])
         return model
     
-    def forward(self, idx):
+    def forward(self, idx, targets=None):
         B, T = idx.size()
         assert T <= self.config.block_size, f"Cannot forward sequence of length {T}, block size is only {self.config.block_size}"
 
         pos = torch.arange(0, T, dtype=torch.long, device=idx.device)
         pos_emb = self.transformer.wpe(pos)
         tok_emb = self.transformer.wte(idx)
+
         x = tok_emb + pos_emb   # Broadcasting
         for block in self.transformer.h:
             x = block(x)
         x = self.transformer.ln_f(x)
-        logits = self.lm_head(x)
-        return logits
+        loss = None
+        if targets is not None:
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1))
+
+        return logits, loss
 
 #################################################################################################################################################################################
 #################################################################################################################################################################################
