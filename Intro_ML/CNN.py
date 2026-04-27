@@ -52,4 +52,4 @@ class CNN(nn.Module):
         output = self.out(x)
         return output, x  # return x for visualization
     cnn = CNN()
-    print(cnn)
+    print(cnn)``
