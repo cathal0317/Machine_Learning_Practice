@@ -1,0 +1,21 @@
+.callout[data-callout="question"] {
+  --callout-color: 119, 247, 164;
+}
+
+.callout[data-callout="question"] .callout-title {
+  color: rgb(104, 214, 143);
+}
+
+a.internal-link,
+.cm-hmd-internal-link {
+  color: rgb(130, 150, 255) !important;
+}
+
+.callout[data-callout="info"] {
+  --callout-color: 160, 210, 230;
+  background-color: rgba(140, 190, 255, 0.07);
+}
+
+.callout[data-callout="info"] .callout-title {
+  color: rgb(100, 150, 170);
+}
